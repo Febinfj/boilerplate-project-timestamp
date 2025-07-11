@@ -30,11 +30,14 @@ app.get("/api/:date?", function (req, res) {
     let date = req.params.date;
     let dateObject;
     if (date) {
-      if (isNaN(date)) {
-        dateObject = new Date(date);
-      } else {
-        dateObject = new Date(parseInt(date));
-      }
+      if (/^\d+$/.test(date)) {
+  // If it's all digits, treat as UNIX timestamp (in milliseconds)
+  dateObject = new Date(parseInt(date));
+} else {
+  // Else, try parsing it as a date string
+  dateObject = new Date(date);
+}
+
     } else {
       dateObject = new Date();
     }
